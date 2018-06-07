@@ -48,23 +48,20 @@ var view = {
             $("#catContent").children().remove()
         }
 
-        for (cat in model){
-            if(catId == model[cat]["id"]){
-                $("#catContent").append(`
-                <div class="card">
-                    <div class="card-image" onclick="controller.countAddOne(`+model[cat]["id"]+`)">
-                        <img src=` + model[cat]["imageUrl"] + `>
-                        <span class="card-title">` + model[cat]["name"] + `</span>
-                    </div>
-                    <div class="card-content">
-                        <p>`+ "number of clicks is " + `<span id="count"> ` + model[cat]["clickCount"] + `</span></p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#" id="editButton" onClick="view.displayAdmin(` + model[cat]["id"] + `)">Edit</a>
-                    </div>
-                </div>`)
-            }
-        }
+        $("#catContent").append(`
+        <div class="card">
+            <div class="card-image" onclick="controller.countAddOne(`+ catId +`)">
+                <img src=` + model[catId]["imageUrl"] + `>
+                <span class="card-title">` + model[catId]["name"] + `</span>
+            </div>
+            <div class="card-content">
+                <p>`+ "number of clicks is " + `<span id="count"> ` + model[catId]["clickCount"] + `</span></p>
+            </div>
+            <div class="card-action">
+                <a href="#" id="editButton" onClick="view.displayAdmin(` + model[catId]["id"] + `)">Edit</a>
+            </div>
+        </div>`)
+
     },
     displayAdmin: function(catId){
 
