@@ -25,13 +25,21 @@ var controller = {
                 view.updateCount(catId)
             }
         }
+    },
+    updateCat: function(catId){
+        model[catId]["name"] = $("#newName").val()
+        model[catId]["imageUrl"] = $("#newImageUrl").val()
+        model[catId]["clickCount"] = $("#newNumberOfClicks").val()
+        
+        view.closeAdmin()
+        view.renderCat(catId)
     }
 }
 
 var view = {
     renderList: function(model){
         for (cat in model){
-            $(".collection").append('<a href="#!" class="collection-item" onclick="view.renderCat(' + model[cat]["id"] + ')">' + model[cat]["name"] + '</a>')
+            $(".collection").append('<a href="#!" class="collection-item" onClick="view.renderCat(' + model[cat]["id"] + ')">' + model[cat]["name"] + '</a>')
         }
     },
     renderCat: function(catId){
@@ -51,9 +59,38 @@ var view = {
                     <div class="card-content">
                         <p>`+ "number of clicks is " + `<span id="count"> ` + model[cat]["clickCount"] + `</span></p>
                     </div>
+                    <div class="card-action">
+                        <a href="#" id="editButton" onClick="view.displayAdmin(` + model[cat]["id"] + `)">Edit</a>
+                    </div>
                 </div>`)
             }
         }
+    },
+    displayAdmin: function(catId){
+
+        $("#editButton").remove()
+        
+        $(".card-content").append(`
+        <div class=adminArea>
+            </br>
+            <label for="newName"> Cat's name </label>
+            <input type="text" id="newName" value=` + model[catId]["name"] + `>
+            <label for="newImageUrl"> Image url </label>
+            <input type="text" id="newImageUrl" value=` + model[catId]["imageUrl"] + `>
+            <label for="newNumberOfClicks"> Clicks </label>
+            <input type="text" id="newNumberOfClicks" value=` + model[catId]["clickCount"] + `>
+        </div> `)
+
+        $(".card-action").append(`<a id="save" onClick="controller.updateCat(` + catId + `)" href="#">Save</a>`)
+        $(".card-action").append(`<a id="close" onClick="view.closeAdmin(` + catId + `)" href="#">Close</a>`)
+    },
+    closeAdmin: function(catId){
+        $(".adminArea").remove()
+        $("#save").remove()
+        $("#close").remove()
+        $(".card-action").append(`
+            <a href="#" id="editButton" onClick="view.displayAdmin(` + catId + `)">Edit</a>
+        `)
     },
     updateCount: function(catId){
         $("#count").text(model[catId]["clickCount"])
