@@ -14,6 +14,10 @@ var model = [
 ];
 
 var controller = {
+    init: function(){
+        view.renderList(model)
+        view.renderCat(0)
+    },
     countAddOne: function(catId){
         for (cat in model){
             if(catId == model[cat]["id"]){
@@ -55,5 +59,4 @@ var view = {
         $("#count").text(model[catId]["clickCount"])
     }
 }
-
-view.renderList(model)
+controller.init()
