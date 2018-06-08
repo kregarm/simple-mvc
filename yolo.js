@@ -1,4 +1,3 @@
-
 var model = [
     {
         name: "cat 1",
