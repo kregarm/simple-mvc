@@ -13,6 +13,7 @@ var model = [
     }
 ];
 
+
 var controller = {
     init: function(){
         view.renderList(model)
