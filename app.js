@@ -33,6 +33,7 @@ var controller = {
     }
 }
 
+
 var view = {
     renderList: function(model){
         for (cat in model){
@@ -60,6 +61,7 @@ var view = {
         </div>`)
 
     },
+    
     displayAdmin: function(catId){
 
         $("#editButton").remove()
@@ -78,6 +80,7 @@ var view = {
         $(".card-action").append(`<a id="save" onClick="controller.updateCat(` + catId + `)" href="#">Save</a>`)
         $(".card-action").append(`<a id="close" onClick="view.closeAdmin(` + catId + `)" href="#">Close</a>`)
     },
+    
     closeAdmin: function(catId){
         $(".adminArea").remove()
         $("#save").remove()
