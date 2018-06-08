@@ -19,12 +19,8 @@ var controller = {
         view.renderCat(0)
     },
     countAddOne: function(catId){
-        for (cat in model){
-            if(catId == model[cat]["id"]){
-                model[cat]["clickCount"] ++
-                view.updateCount(catId)
-            }
-        }
+        model[catId]["clickCount"] ++
+        view.updateCount(catId)
     },
     updateCat: function(catId){
         model[catId]["name"] = $("#newName").val()
