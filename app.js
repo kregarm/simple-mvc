@@ -1,4 +1,4 @@
-var model = [
+var collection = [
     {
         name: "cat 1",
         imageUrl: "https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&h=350",
@@ -15,17 +15,18 @@ var model = [
 
 var controller = {
     init: function(){
-        view.renderList(model)
+
+        view.renderList(collection)
         view.renderCat(0)
     },
     countAddOne: function(catId){
-        model[catId]["clickCount"] ++
+        collection[catId]["clickCount"] ++
         view.updateCount(catId)
     },
     updateCat: function(catId){
-        model[catId]["name"] = $("#newName").val()
-        model[catId]["imageUrl"] = $("#newImageUrl").val()
-        model[catId]["clickCount"] = $("#newNumberOfClicks").val()
+        collection[catId]["name"] = $("#newName").val()
+        collection[catId]["imageUrl"] = $("#newImageUrl").val()
+        collection[catId]["clickCount"] = $("#newNumberOfClicks").val()
         
         view.closeAdmin()
         view.renderCat(catId)
@@ -33,9 +34,9 @@ var controller = {
 }
 
 var view = {
-    renderList: function(model){
-        for (cat in model){
-            $(".collection").append('<a href="#!" class="collection-item" onClick="view.renderCat(' + model[cat]["id"] + ')">' + model[cat]["name"] + '</a>')
+    renderList: function(collection){
+        for (cat in collection){
+            $(".collection").append('<a href="#!" class="collection-item" onClick="view.renderCat(' + collection[cat]["id"] + ')">' + collection[cat]["name"] + '</a>')
         }
     },
     renderCat: function(catId){
@@ -47,14 +48,14 @@ var view = {
         $("#catContent").append(`
         <div class="card">
             <div class="card-image" onclick="controller.countAddOne(`+ catId +`)">
-                <img src=` + model[catId]["imageUrl"] + `>
-                <span class="card-title">` + model[catId]["name"] + `</span>
+                <img src=` + collection[catId]["imageUrl"] + `>
+                <span class="card-title">` + collection[catId]["name"] + `</span>
             </div>
             <div class="card-content">
-                <p>`+ "number of clicks is " + `<span id="count"> ` + model[catId]["clickCount"] + `</span></p>
+                <p>`+ "number of clicks is " + `<span id="count"> ` + collection[catId]["clickCount"] + `</span></p>
             </div>
             <div class="card-action">
-                <a href="#" id="editButton" onClick="view.displayAdmin(` + model[catId]["id"] + `)">Edit</a>
+                <a href="#" id="editButton" onClick="view.displayAdmin(` + collection[catId]["id"] + `)">Edit</a>
             </div>
         </div>`)
 
@@ -67,11 +68,11 @@ var view = {
         <div class=adminArea>
             </br>
             <label for="newName"> Cat's name </label>
-            <input type="text" id="newName" value=` + model[catId]["name"] + `>
+            <input type="text" id="newName" value=` + collection[catId]["name"] + `>
             <label for="newImageUrl"> Image url </label>
-            <input type="text" id="newImageUrl" value=` + model[catId]["imageUrl"] + `>
+            <input type="text" id="newImageUrl" value=` + collection[catId]["imageUrl"] + `>
             <label for="newNumberOfClicks"> Clicks </label>
-            <input type="text" id="newNumberOfClicks" value=` + model[catId]["clickCount"] + `>
+            <input type="text" id="newNumberOfClicks" value=` + collection[catId]["clickCount"] + `>
         </div> `)
 
         $(".card-action").append(`<a id="save" onClick="controller.updateCat(` + catId + `)" href="#">Save</a>`)
@@ -86,7 +87,7 @@ var view = {
         `)
     },
     updateCount: function(catId){
-        $("#count").text(model[catId]["clickCount"])
+        $("#count").text(collection[catId]["clickCount"])
     }
 }
 controller.init()
