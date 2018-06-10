@@ -3,7 +3,7 @@ var collection = [
         name: "cat 1",
         imageUrl: "https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?auto=compress&cs=tinysrgb&h=350",
         clickCount: 0,
-        id: 0
+        id: 5
     },
     {
         name: "cat 2",
@@ -15,21 +15,36 @@ var collection = [
 
 var controller = {
     init: function(){
-
-        view.renderList(collection)
-        view.renderCat(0)
+        if (collection.length !== 0){
+            view.renderList(collection)
+            view.renderCat(0)
+        } else {
+            view.showAlert("There are no cats in the collection")
+        }
     },
     countAddOne: function(catId){
-        collection[catId]["clickCount"] ++
+        cat = controller.catInCollection(catId)
+        cat["clickCount"] ++
         view.updateCount(catId)
     },
     updateCat: function(catId){
-        collection[catId]["name"] = $("#newName").val()
-        collection[catId]["imageUrl"] = $("#newImageUrl").val()
-        collection[catId]["clickCount"] = $("#newNumberOfClicks").val()
-        
-        view.closeAdmin()
-        view.renderCat(catId)
+        cat = controller.catInCollection(catId)
+        if (controller.catInCollection(catId) === true) {
+            collection[catId]["name"] = $("#newName").val()
+            collection[catId]["imageUrl"] = $("#newImageUrl").val()
+            collection[catId]["clickCount"] = $("#newNumberOfClicks").val()
+            
+            view.closeAdmin()
+            view.renderCat(catId)
+        }
+    },
+    catInCollection: function(catId){
+        for (cat in collection){
+            if (catId == collection[cat]["id"]){
+                return collection[cat]
+            }
+        }
+        view.showAlert("Cat doesn't exist!")
     }
 }
 
@@ -39,7 +54,7 @@ var view = {
             $(".collection").append('<a href="#!" class="collection-item" onClick="view.renderCat(' + collection[cat]["id"] + ')">' + collection[cat]["name"] + '</a>')
         }
     },
-    renderCat: function(catId){
+    renderCat: function(catNumber){
 
         if ($("#catContent").children().length != 0) {
             $("#catContent").children().remove()
@@ -47,15 +62,15 @@ var view = {
 
         $("#catContent").append(`
         <div class="card">
-            <div class="card-image" onclick="controller.countAddOne(`+ catId +`)">
-                <img src=` + collection[catId]["imageUrl"] + `>
-                <span class="card-title">` + collection[catId]["name"] + `</span>
+            <div class="card-image" onclick="controller.countAddOne(`+ collection[catNumber]["id"] +`)">
+                <img src=` + collection[catNumber]["imageUrl"] + `>
+                <span class="card-title">` + collection[catNumber]["name"] + `</span>
             </div>
             <div class="card-content">
-                <p>`+ "number of clicks is " + `<span id="count"> ` + collection[catId]["clickCount"] + `</span></p>
+                <p>`+ "number of clicks is " + `<span id="count"> ` + collection[catNumber]["clickCount"] + `</span></p>
             </div>
             <div class="card-action">
-                <a href="#" id="editButton" onClick="view.displayAdmin(` + collection[catId]["id"] + `)">Edit</a>
+                <a href="#" id="editButton" onClick="view.displayAdmin(` + collection[catNumber]["id"] + `)">Edit</a>
             </div>
         </div>`)
 
@@ -88,6 +103,9 @@ var view = {
     },
     updateCount: function(catId){
         $("#count").text(collection[catId]["clickCount"])
+    },
+    showAlert: function(message){
+        alert(message)
     }
 }
 controller.init()
